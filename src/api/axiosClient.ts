@@ -1,4 +1,5 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { TokenResponse } from 'models';
 
 const axiosClient = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/v1',
@@ -31,9 +32,38 @@ axiosClient.interceptors.response.use(
         // Do something with response data
         return response.data;
     },
-    function (error) {
+    async function (error) {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         // Do something with response error
+
+        const originalRequest = error.config;
+
+        // If the error status is 401 and there is no originalRequest._retry flag,
+        // it means the token has expired and we need to refresh it
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                const refreshToken = localStorage.getItem('refresh_token');
+
+                const tokensResponse: TokenResponse = await axiosClient.post('/auth/refresh', {
+                    refresh_token: refreshToken,
+                });
+
+                const { access_token, refresh_token } = tokensResponse;
+
+                localStorage.setItem('access_token', access_token);
+                localStorage.setItem('refresh_token', refresh_token);
+
+                // Retry the original request with the new token
+                originalRequest.headers.Authorization = `Bearer ${access_token}`;
+                return axiosClient(originalRequest);
+            } catch (error) {
+                // Handle refresh token error or redirect to login
+                console.log('Refresh Token Expired!');
+            }
+        }
+
         return Promise.reject(error);
     },
 );

@@ -3,22 +3,20 @@ import { authActions } from './authSlice';
 import { LoginPayload, TokenResponse, User } from 'models';
 import { PayloadAction } from '@reduxjs/toolkit';
 import authApi from 'api/authApi';
+import { history } from 'utils';
 
 function* handleLogin(payload: LoginPayload) {
     console.log('Hanle Login', payload);
     try {
-        const { access_token, refresh_token, expires_in }: TokenResponse = yield call(
-            authApi.login,
-            payload,
-        );
+        const { access_token, refresh_token }: TokenResponse = yield call(authApi.login, payload);
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
-        localStorage.setItem('expires_in', expires_in);
 
         const currentUser: User = yield call(authApi.profile);
         console.log(currentUser);
 
         yield put(authActions.loginSuccess(currentUser));
+        yield call(history.push, '/');
     } catch (error: any) {
         console.log(error.message);
         yield put(authActions.loginFailed(error.message));
@@ -27,7 +25,8 @@ function* handleLogin(payload: LoginPayload) {
 function* handleLogout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('expires_in');
+
+    yield call(history.push, '/login');
 }
 
 export function* watchLoginFlow() {

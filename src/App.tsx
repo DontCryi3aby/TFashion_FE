@@ -3,7 +3,6 @@ import MainLayout from 'components/Layouts/MainLayout';
 import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ROUTES from 'routes';
-import './App.css';
 
 function App() {
     return (

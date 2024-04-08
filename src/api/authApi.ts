@@ -19,7 +19,9 @@ const authApi = {
 
     refresh(refresh_token: string): Promise<TokenResponse> {
         const url = '/auth/refresh';
-        return axiosClient.post(url, refresh_token);
+        return axiosClient.post(url, {
+            refresh_token,
+        });
     },
 };
 

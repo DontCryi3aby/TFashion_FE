@@ -1,5 +1,6 @@
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
-import { Header, Sidebar } from '../components';
+import { Header } from '../components';
 
 export interface MainLayoutProps {
     children: ReactNode;
@@ -7,12 +8,11 @@ export interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
     return (
-        <div>
+        <Box>
             <Header />
-            <div>
-                <Sidebar />
-                <div>{children}</div>
-            </div>
-        </div>
+            <Box>
+                <Box>{children}</Box>
+            </Box>
+        </Box>
     );
 }
