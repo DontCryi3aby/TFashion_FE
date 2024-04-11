@@ -6,7 +6,6 @@ import authApi from 'api/authApi';
 import { history } from 'utils';
 
 function* handleLogin(payload: LoginPayload) {
-    console.log('Hanle Login', payload);
     try {
         const { access_token, refresh_token }: TokenResponse = yield call(authApi.login, payload);
         localStorage.setItem('access_token', access_token);

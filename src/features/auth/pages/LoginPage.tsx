@@ -1,24 +1,23 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { LoginPayload } from '@/models';
+import { Box, Paper, Typography } from '@mui/material';
 import { useAppDispatch } from 'app/hooks';
-import * as React from 'react';
 import { authActions } from '../authSlice';
+import LoginForm from './LoginForm';
 
-export interface LoginPageProps {}
+export interface LoginPageProps {
+    email: string;
+    password: string;
+}
 
 export default function LoginPage(props: LoginPageProps) {
     const dispatch = useAppDispatch();
-
-    const handleLogin = () => {
-        dispatch(
-            authActions.login({
-                email: 'ngocthach@globosoftware.net',
-                password: '243243',
-            }),
-        );
+    const initialValues: LoginPageProps = {
+        email: '',
+        password: '',
     };
 
-    const handleLogout = () => {
-        dispatch(authActions.logout());
+    const handleLoginFormSubmit = (formValues: LoginPayload) => {
+        dispatch(authActions.login(formValues));
     };
 
     return (
@@ -30,22 +29,12 @@ export default function LoginPage(props: LoginPageProps) {
                 minHeight: '100vh',
             }}
         >
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Paper elevation={3} sx={{ p: 3, width: '400px' }}>
                 <Typography component="h1" variant="h5">
-                    Student Management
+                    Login Form
                 </Typography>
 
-                <Box mt={2}>
-                    <Button fullWidth variant="contained" color="primary" onClick={handleLogin}>
-                        Login
-                    </Button>
-                </Box>
-
-                <Box mt={2}>
-                    <Button fullWidth variant="contained" color="primary" onClick={handleLogout}>
-                        Logout
-                    </Button>
-                </Box>
+                <LoginForm initialValues={initialValues} onSubmit={handleLoginFormSubmit} />
             </Paper>
         </Box>
     );

@@ -205,7 +205,6 @@ export function Header(props: HeaderProps) {
                                     variant="contained"
                                     onClick={async () => {
                                         const rf = localStorage.getItem('refresh_token') ?? '';
-                                        console.log(rf);
                                         const tokens = await authApi.refresh(rf);
                                         console.log(tokens);
                                     }}

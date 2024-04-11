@@ -8,6 +8,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme, history } from 'utils';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Bounce, ToastContainer } from 'react-toastify';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -20,6 +21,19 @@ root.render(
                     <HistoryRouter history={history}>
                         <CssBaseline />
                         <App />
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            transition={Bounce}
+                            theme="light"
+                        />
                     </HistoryRouter>
                 </ThemeProvider>
             </PersistGate>

@@ -2,6 +2,7 @@ import { NotFound, PrivateRoute } from 'components/Common';
 import MainLayout from 'components/Layouts/MainLayout';
 import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import ROUTES from 'routes';
 
 function App() {
