@@ -4,6 +4,8 @@ import { Fragment } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import ROUTES from 'routes';
+import './styles/global.css';
+import '@splidejs/react-splide/css';
 
 function App() {
     return (
