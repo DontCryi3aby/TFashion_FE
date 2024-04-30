@@ -1,26 +1,26 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import {
-    Box,
-    IconButton,
-    Toolbar,
-    Typography,
-    Menu,
-    Container,
     Avatar,
+    Box,
     Button,
-    Tooltip,
+    Container,
+    IconButton,
+    Menu,
     MenuItem,
+    Toolbar,
+    Tooltip,
+    Typography,
 } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import * as React from 'react';
 
-import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { history } from 'utils';
-import { Link } from 'react-router-dom';
-import { authActions } from 'features/auth/authSlice';
+import MenuIcon from '@mui/icons-material/Menu';
 import authApi from 'api/authApi';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { Logo } from 'components/Common';
+import { authActions } from 'features/auth/authSlice';
+import { Link } from 'react-router-dom';
+import { history } from 'utils';
 
 export interface HeaderProps {}
 

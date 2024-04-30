@@ -14,31 +14,29 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <ThemeProvider theme={theme}>
-                    <HistoryRouter history={history}>
-                        <CssBaseline />
-                        <App />
-                        <ToastContainer
-                            position="top-right"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            transition={Bounce}
-                            theme="light"
-                        />
-                    </HistoryRouter>
-                </ThemeProvider>
-            </PersistGate>
-        </Provider>
-    </React.StrictMode>,
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <ThemeProvider theme={theme}>
+                <HistoryRouter history={history}>
+                    <CssBaseline />
+                    <App />
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        transition={Bounce}
+                        theme="light"
+                    />
+                </HistoryRouter>
+            </ThemeProvider>
+        </PersistGate>
+    </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

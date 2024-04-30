@@ -1,4 +1,3 @@
-import { LoginPayload } from '@/models';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Box, Button, CircularProgress, IconButton, InputAdornment, Stack } from '@mui/material';
@@ -10,6 +9,7 @@ import { TextFieldCustom } from '../../../components/FormFields';
 import { selectIsLogging } from '../authSlice';
 import LoginFormSchema from './LoginFormSchema';
 import { toast } from 'react-toastify';
+import { LoginPayload } from 'models';
 
 export interface LoginFormProps {
     initialValues: LoginPayload;

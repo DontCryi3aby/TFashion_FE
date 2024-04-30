@@ -1,4 +1,4 @@
-import { LoginPayload } from '@/models';
+import { LoginPayload } from 'models';
 import { Box, Paper, Typography } from '@mui/material';
 import { useAppDispatch } from 'app/hooks';
 import { authActions } from '../authSlice';
