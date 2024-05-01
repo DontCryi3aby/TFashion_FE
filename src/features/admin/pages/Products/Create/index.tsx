@@ -1,12 +1,12 @@
 import { Box, Paper, Typography } from '@mui/material';
-import { Product } from 'models/product';
+import { ProductPayload } from 'models/product';
 import { CreateProductForm } from './CreateProductForm';
 
 export interface CreateProps {}
 
 export function Create(props: CreateProps) {
-    const initialValues: Product = {
-        category: '',
+    const initialValues: ProductPayload = {
+        category_id: '',
         title: '',
         description: '',
         quantity: '',

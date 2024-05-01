@@ -2,17 +2,17 @@ import { Box, Button } from '@mui/material';
 import { SelectFieldCustom, TextFieldCustom, UploadFieldCustom } from 'components/FormFields';
 import { ConnectedFocusError } from 'focus-formik-error';
 import { Form, Formik } from 'formik';
-import { Product } from 'models/product';
+import { ProductPayload } from 'models/product';
 import { toast } from 'react-toastify';
 import CreateProductFormSchema from './CreateProductFormSchema';
 
 export interface CreateProductFormProps {
-    initialValues: Product;
-    onSubmit?: (formValues: Product) => void;
+    initialValues: ProductPayload;
+    onSubmit?: (formValues: ProductPayload) => void;
 }
 
 export function CreateProductForm({ initialValues, onSubmit }: CreateProductFormProps) {
-    const handleCreateProductSubmit = async (payload: Product) => {
+    const handleCreateProductSubmit = async (payload: ProductPayload) => {
         try {
             await onSubmit?.(payload);
         } catch (error: any) {
@@ -34,7 +34,7 @@ export function CreateProductForm({ initialValues, onSubmit }: CreateProductForm
                     </Box>
                     <Box mt={2}>
                         <SelectFieldCustom
-                            name="category"
+                            name="category_id"
                             label="Category"
                             options={[
                                 { label: 'A', value: 1 },
