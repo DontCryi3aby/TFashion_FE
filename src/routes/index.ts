@@ -6,6 +6,7 @@ import CartPage from 'features/cart/pages/CartPage';
 import { AdminLayout } from 'components/Layouts/AdminLayout';
 import { AdminProductPage, Dashboard } from 'features/admin/pages';
 import { Create as AdminProductCreate } from 'features/admin/pages/Products/Create';
+import { Update as AdminProductUpdate } from 'features/admin/pages/Products/Update';
 const ROUTES: Array<RouteProps> = [
     { path: '/register', component: LoginPage, layout: null },
     { path: '/login', component: LoginPage, layout: null },
@@ -15,6 +16,12 @@ const ROUTES: Array<RouteProps> = [
     {
         path: '/admin/products/create',
         component: AdminProductCreate,
+        private: true,
+        layout: AdminLayout,
+    },
+    {
+        path: '/admin/products/:id/edit',
+        component: AdminProductUpdate,
         private: true,
         layout: AdminLayout,
     },

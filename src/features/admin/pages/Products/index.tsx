@@ -15,6 +15,7 @@ export function AdminProductPage(props: AdminProductPageProps) {
     useEffect(() => {
         (async () => {
             const { data } = await productApi.getAll();
+            console.log({ data });
             setProductList(data);
             setIsLoadingListProduct(false);
         })();

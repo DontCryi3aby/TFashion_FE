@@ -10,6 +10,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
 import { Product } from 'models/product';
+import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -36,6 +44,17 @@ export interface ProductListTableProps {
 }
 
 export function ProductListTable({ productList }: ProductListTableProps) {
+    const navigate = useNavigate();
+
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const handleOpenConfirmDeleteDialog = () => {
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseConfirmDeleteDialog = () => {
+        setOpenDeleteDialog(false);
+    };
+
     return productList.length > 0 ? (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -43,6 +62,7 @@ export function ProductListTable({ productList }: ProductListTableProps) {
                     <TableRow>
                         <StyledTableCell align="center">Product name</StyledTableCell>
                         <StyledTableCell align="center">Price</StyledTableCell>
+                        <StyledTableCell align="center">Category</StyledTableCell>
                         <StyledTableCell align="center">Quantity</StyledTableCell>
                         <StyledTableCell align="center">Description</StyledTableCell>
                         <StyledTableCell align="center">Action</StyledTableCell>
@@ -77,8 +97,13 @@ export function ProductListTable({ productList }: ProductListTableProps) {
                             <StyledTableCell align="center">
                                 <b>{product.price}</b>
                             </StyledTableCell>
+                            <StyledTableCell align="center">
+                                <Typography>{product.category.name}</Typography>
+                            </StyledTableCell>
                             <StyledTableCell align="center">{product.quantity}</StyledTableCell>
-                            <StyledTableCell align="center">{product.description}</StyledTableCell>
+                            <StyledTableCell align="center">
+                                <Typography align="justify">{product.description}</Typography>
+                            </StyledTableCell>
                             <StyledTableCell align="center">
                                 <Box display="flex">
                                     <Tooltip title="Edit product parameters">
@@ -88,6 +113,9 @@ export function ProductListTable({ productList }: ProductListTableProps) {
                                                     color: '#4caf50',
                                                 },
                                             }}
+                                            onClick={() =>
+                                                navigate(`/admin/products/${product.id}/edit`)
+                                            }
                                         >
                                             <ModeEditIcon fontSize="small" />
                                         </IconButton>
@@ -99,10 +127,40 @@ export function ProductListTable({ productList }: ProductListTableProps) {
                                                     color: '#ff5722',
                                                 },
                                             }}
+                                            onClick={handleOpenConfirmDeleteDialog}
                                         >
                                             <ClearIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
+
+                                    <Dialog
+                                        open={openDeleteDialog}
+                                        onClose={handleCloseConfirmDeleteDialog}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                    >
+                                        <DialogTitle id="alert-dialog-title">
+                                            This action can't be undone!
+                                        </DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText id="alert-dialog-description">
+                                                Are you sure you want to delete?
+                                            </DialogContentText>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleCloseConfirmDeleteDialog}>
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                onClick={handleCloseConfirmDeleteDialog}
+                                                autoFocus
+                                                color="warning"
+                                                variant="contained"
+                                            >
+                                                Delete
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
                                 </Box>
                             </StyledTableCell>
                         </StyledTableRow>

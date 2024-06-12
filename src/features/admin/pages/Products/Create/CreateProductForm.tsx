@@ -5,10 +5,17 @@ import { Form, Formik } from 'formik';
 import { ProductPayload } from 'models/product';
 import { toast } from 'react-toastify';
 import CreateProductFormSchema from './CreateProductFormSchema';
+import { useEffect, useState } from 'react';
+import categoriesApi from 'api/categoriesApi';
 
 export interface CreateProductFormProps {
     initialValues: ProductPayload;
     onSubmit?: (formValues: ProductPayload) => void;
+}
+
+interface CategoryOption {
+    label: string;
+    value: number;
 }
 
 export function CreateProductForm({ initialValues, onSubmit }: CreateProductFormProps) {
@@ -19,6 +26,21 @@ export function CreateProductForm({ initialValues, onSubmit }: CreateProductForm
             toast.error(error?.message);
         }
     };
+
+    // Handle get list categories & put in Select Option field
+    const [categoriesOptions, setCategoryOptions] = useState<Array<CategoryOption>>([]);
+    useEffect(() => {
+        (async () => {
+            const { data } = await categoriesApi.getAll();
+            const listOptions = data.map((d) => {
+                return {
+                    value: d.id,
+                    label: d.name,
+                };
+            });
+            setCategoryOptions(listOptions as Array<CategoryOption>);
+        })();
+    }, []);
 
     return (
         <Formik
@@ -36,11 +58,7 @@ export function CreateProductForm({ initialValues, onSubmit }: CreateProductForm
                         <SelectFieldCustom
                             name="category_id"
                             label="Category"
-                            options={[
-                                { label: 'A', value: 1 },
-                                { label: 'B', value: 2 },
-                                { label: 'C', value: 3 },
-                            ]}
+                            options={categoriesOptions}
                         />
                     </Box>
                     <Box mt={2}>

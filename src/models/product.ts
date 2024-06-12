@@ -9,9 +9,19 @@ export interface GalleryPayload {
     previewUrl: string;
 }
 
+export interface Category {
+    id?: number;
+    name: string;
+}
+
+export interface CategoryPayload {
+    id?: number;
+    name: string;
+}
+
 export interface Product {
     id?: number;
-    category: string;
+    category: Category;
     title: string;
     description?: string;
     quantity: string;
@@ -24,13 +34,11 @@ export interface Product {
 
 export interface ProductPayload {
     id?: number;
-    category_id: string;
+    category_id: number;
     title: string;
     description?: string;
     quantity: string;
     price: string;
     discount?: string;
-    create_at?: string;
-    updated_at?: string;
     galleries: [] | Array<GalleryPayload>;
 }

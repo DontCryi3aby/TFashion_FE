@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { TokenResponse } from 'models';
 
 const axiosClient = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/v1',
+    baseURL: `${process.env.REACT_APP_TFASHION_DOMAIN}/api/v1`,
     headers: {
         'Content-Type': 'application/json',
     },

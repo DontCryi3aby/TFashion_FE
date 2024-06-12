@@ -1,16 +1,14 @@
 import Logout from '@mui/icons-material/Logout';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
-import PersonAdd from '@mui/icons-material/PersonAdd';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import SearchIcon from '@mui/icons-material/Search';
-import Settings from '@mui/icons-material/Settings';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { Box, Divider, IconButton, Tooltip, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 

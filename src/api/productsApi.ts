@@ -8,7 +8,7 @@ const productApi = {
         return axiosClient.get(url, { params });
     },
 
-    getDetail(id: string): Promise<Product> {
+    getDetail(id: string | number): Promise<Product> {
         const url = `/products/${id}`;
         return axiosClient.get(url);
     },
@@ -18,12 +18,12 @@ const productApi = {
         return axiosClient.post(url, data);
     },
 
-    update(id: string, data: Partial<Product>): Promise<Product> {
+    update(id: string | number, data: Partial<Product>): Promise<Product> {
         const url = `/products/${id}`;
         return axiosClient.patch(url, data);
     },
 
-    remove(id: string): Promise<any> {
+    remove(id: string | number): Promise<any> {
         const url = `/products/${id}`;
         return axiosClient.delete(url);
     },

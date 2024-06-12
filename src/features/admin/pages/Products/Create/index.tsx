@@ -6,14 +6,12 @@ export interface CreateProps {}
 
 export function Create(props: CreateProps) {
     const initialValues: ProductPayload = {
-        category_id: '',
+        category_id: 0,
         title: '',
         description: '',
         quantity: '',
         price: '',
         discount: '',
-        create_at: '',
-        updated_at: '',
         galleries: [],
     };
 
