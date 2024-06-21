@@ -1,25 +1,33 @@
-import { Box, Button, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Pagination, Skeleton, Typography } from '@mui/material';
 import productApi from 'api/productsApi';
 import { Product } from 'models/product';
-import { useEffect, useState } from 'react';
-import { ProductListTable } from './ProductTable';
-import { theme } from 'utils';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { theme } from 'utils';
+import { ProductListTable } from './ProductTable';
 
 export interface AdminProductPageProps {}
 
 export function AdminProductPage(props: AdminProductPageProps) {
     const [isLoadingListProduct, setIsLoadingListProduct] = useState(true);
     const [productList, setProductList] = useState<Array<Product>>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPage, setTotalPage] = useState(0);
 
     useEffect(() => {
         (async () => {
-            const { data } = await productApi.getAll();
+            const { data, meta } = await productApi.getAll({ per_page: 10, page: currentPage });
+            console.log('call api');
             console.log({ data });
             setProductList(data);
+            setTotalPage(meta.last_page);
             setIsLoadingListProduct(false);
         })();
-    }, []);
+    }, [currentPage]);
+
+    const handleChangePage = (event: ChangeEvent<any>, page: number) => {
+        setCurrentPage(page);
+    };
 
     return (
         <>
@@ -55,7 +63,18 @@ export function AdminProductPage(props: AdminProductPageProps) {
                     <Skeleton variant="rectangular" height={100} sx={{ mt: 1 }} />
                 </>
             ) : (
-                <ProductListTable productList={productList} />
+                <>
+                    <Box sx={{ mb: 1, display: 'flex', justifyContent: 'center' }}>
+                        {!!totalPage && (
+                            <Pagination
+                                count={totalPage}
+                                onChange={handleChangePage}
+                                color="primary"
+                            />
+                        )}
+                    </Box>
+                    <ProductListTable productList={productList} setProductList={setProductList} />
+                </>
             )}
         </>
     );

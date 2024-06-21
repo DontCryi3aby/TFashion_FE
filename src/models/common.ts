@@ -1,12 +1,16 @@
 export interface PaginationParams {
-    _limit: number;
-    _page: number;
-    _totalRows: number;
+    per_page: number;
+    page: number;
+    total: number;
+    current_page: number;
+    last_page: number;
+
+    [key: string]: any;
 }
 
 export interface ListResponse<T> {
     data: Array<T>;
-    pagination: PaginationParams;
+    meta: PaginationParams;
 }
 
 export interface ListParams {

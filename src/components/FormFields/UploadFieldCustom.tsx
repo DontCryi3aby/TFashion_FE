@@ -30,7 +30,6 @@ export function UploadFieldCustom({ label, name, multiple }: UploadFieldCustomPr
     const { value, onBlur } = field;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('files: ', event.target.files);
         if (event.target.files?.length) {
             const filesList = value;
             Array.from(event.target.files).forEach((file) => {

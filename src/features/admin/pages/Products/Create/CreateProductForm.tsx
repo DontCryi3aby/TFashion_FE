@@ -86,7 +86,7 @@ export function CreateProductForm({ initialValues, onSubmit }: CreateProductForm
                         />
                     </Box>
                     <Box mt={2} sx={{ textAlign: 'right' }}>
-                        <Button type="submit" variant="contained">
+                        <Button type="submit" variant="contained" disabled={!props.dirty}>
                             Create
                         </Button>
                     </Box>

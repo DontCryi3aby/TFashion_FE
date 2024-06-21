@@ -17,7 +17,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import productApi from 'api/productsApi';
+import { toast } from 'react-toastify';
+import { theme } from 'utils';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -41,9 +44,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export interface ProductListTableProps {
     productList: Array<Product>;
+    setProductList: any;
 }
 
-export function ProductListTable({ productList }: ProductListTableProps) {
+function ProductItemTable({ product, setProductList }: any) {
     const navigate = useNavigate();
 
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -55,6 +59,131 @@ export function ProductListTable({ productList }: ProductListTableProps) {
         setOpenDeleteDialog(false);
     };
 
+    const handleDeleteProduct = async (id: string | number) => {
+        try {
+            await productApi.remove(id);
+            toast('Deleted product successfully!');
+
+            const { data } = await productApi.getAll();
+            setProductList(data);
+        } catch (error) {
+            toast.error('Something went wrong, try again!');
+        }
+        handleCloseConfirmDeleteDialog();
+    };
+
+    return (
+        <StyledTableRow>
+            <StyledTableCell component="th" scope="row">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
+                    <Box flex={1} height={100}>
+                        {product.galleries.length > 0 && (
+                            <img
+                                src={`${process.env.REACT_APP_TFASHION_DOMAIN}/storage/${product?.galleries[0].thumbnail}`}
+                                alt="Product Img"
+                                style={{ objectFit: 'contain' }}
+                            />
+                        )}
+                    </Box>
+                    <Box flex={1}>
+                        <Typography>{product.title}</Typography>
+                    </Box>
+                </Box>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+                <Box
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center' }}
+                >
+                    <Typography
+                        sx={{
+                            color: theme.palette.common.black,
+                            fontWeight: 700,
+                            textDecoration: !!product.discount ? 'line-through' : 'inherit',
+                        }}
+                    >
+                        {product.price}
+                    </Typography>
+                    {!!product.discount && (
+                        <Typography sx={{ color: theme.palette.warning.main, fontWeight: 700 }}>
+                            {product.price - product.discount}
+                        </Typography>
+                    )}
+                </Box>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+                <Typography>{product.category.name}</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="center">{product.quantity}</StyledTableCell>
+            <StyledTableCell align="center">
+                <Typography align="justify">{product.description}</Typography>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+                <Box display="flex">
+                    <Tooltip title="Edit product parameters">
+                        <IconButton
+                            sx={{
+                                '&:hover': {
+                                    color: '#4caf50',
+                                },
+                            }}
+                            onClick={() => navigate(`/admin/products/${product.id}/edit`)}
+                        >
+                            <ModeEditIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Remove product">
+                        <IconButton
+                            sx={{
+                                '&:hover': {
+                                    color: '#ff5722',
+                                },
+                            }}
+                            onClick={handleOpenConfirmDeleteDialog}
+                        >
+                            <ClearIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Dialog
+                        open={openDeleteDialog}
+                        onClose={handleCloseConfirmDeleteDialog}
+                        aria-labelledby={`alert-dialog-title-${product.id}`}
+                        aria-describedby={`alert-dialog-description-${product.id}`}
+                    >
+                        <DialogTitle id={`alert-dialog-title-${product.id}`}>
+                            This action can't be undone!
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id={`alert-dialog-description-${product.id}`}>
+                                Are you sure you want to delete?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseConfirmDeleteDialog}>Cancel</Button>
+                            <Button
+                                onClick={() => handleDeleteProduct(product.id as number)}
+                                autoFocus
+                                color="warning"
+                                variant="contained"
+                            >
+                                Delete
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </Box>
+            </StyledTableCell>
+        </StyledTableRow>
+    );
+}
+
+export function ProductListTable({ productList, setProductList }: ProductListTableProps) {
     return productList.length > 0 ? (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -69,101 +198,10 @@ export function ProductListTable({ productList }: ProductListTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {productList.map((product, index) => (
-                        <StyledTableRow key={index}>
-                            <StyledTableCell component="th" scope="row">
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        gap: 2,
-                                    }}
-                                >
-                                    <Box flex={1} height={100}>
-                                        {product.galleries.length > 0 && (
-                                            <img
-                                                src={product?.galleries[0].thumbnail}
-                                                alt="Product Img"
-                                                style={{ objectFit: 'contain' }}
-                                            />
-                                        )}
-                                    </Box>
-                                    <Box flex={1}>
-                                        <Typography>{product.title}</Typography>
-                                    </Box>
-                                </Box>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                                <b>{product.price}</b>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                                <Typography>{product.category.name}</Typography>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">{product.quantity}</StyledTableCell>
-                            <StyledTableCell align="center">
-                                <Typography align="justify">{product.description}</Typography>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                                <Box display="flex">
-                                    <Tooltip title="Edit product parameters">
-                                        <IconButton
-                                            sx={{
-                                                '&:hover': {
-                                                    color: '#4caf50',
-                                                },
-                                            }}
-                                            onClick={() =>
-                                                navigate(`/admin/products/${product.id}/edit`)
-                                            }
-                                        >
-                                            <ModeEditIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Remove product">
-                                        <IconButton
-                                            sx={{
-                                                '&:hover': {
-                                                    color: '#ff5722',
-                                                },
-                                            }}
-                                            onClick={handleOpenConfirmDeleteDialog}
-                                        >
-                                            <ClearIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-
-                                    <Dialog
-                                        open={openDeleteDialog}
-                                        onClose={handleCloseConfirmDeleteDialog}
-                                        aria-labelledby="alert-dialog-title"
-                                        aria-describedby="alert-dialog-description"
-                                    >
-                                        <DialogTitle id="alert-dialog-title">
-                                            This action can't be undone!
-                                        </DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText id="alert-dialog-description">
-                                                Are you sure you want to delete?
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={handleCloseConfirmDeleteDialog}>
-                                                Cancel
-                                            </Button>
-                                            <Button
-                                                onClick={handleCloseConfirmDeleteDialog}
-                                                autoFocus
-                                                color="warning"
-                                                variant="contained"
-                                            >
-                                                Delete
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </Box>
-                            </StyledTableCell>
-                        </StyledTableRow>
+                    {productList.map((product) => (
+                        <React.Fragment key={product.id}>
+                            <ProductItemTable product={product} setProductList={setProductList} />
+                        </React.Fragment>
                     ))}
                 </TableBody>
             </Table>

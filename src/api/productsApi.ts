@@ -27,6 +27,11 @@ const productApi = {
         const url = `/products/${id}`;
         return axiosClient.delete(url);
     },
+
+    removeGallery(id: string | number): Promise<any> {
+        const url = `/galleries/${id}`;
+        return axiosClient.delete(url);
+    },
 };
 
 export default productApi;

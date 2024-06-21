@@ -5,11 +5,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import categoriesApi from 'api/categoriesApi';
+import productApi from 'api/productsApi';
 import { SelectFieldCustom, TextFieldCustom, UploadFieldCustom } from 'components/FormFields';
 import { ConnectedFocusError } from 'focus-formik-error';
 import { Form, Formik } from 'formik';
 import { Gallery, ProductPayload } from 'models/product';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import UpdateProductFormSchema from './UpdateProductFormSchema';
 
@@ -17,6 +18,7 @@ export interface UpdateProductFormProps {
     productID?: string;
     initialValues: ProductPayload;
     onSubmit?: (formValues: ProductPayload) => void;
+    updateProduct: () => void;
 }
 
 interface CategoryOption {
@@ -24,12 +26,93 @@ interface CategoryOption {
     value: number;
 }
 
+interface ProductImageProps {
+    file: Gallery;
+    updateProduct: () => void;
+}
+
+function ProductImage({ file, updateProduct }: ProductImageProps) {
+    // Confirm delete gallery dialog
+    const [openConfirmDeleteGalleryDialog, setOpenConfirmDeleteGalleryDialog] = useState(false);
+
+    const handleClickOpenConfirmDeleteGalleryDialog = () => {
+        setOpenConfirmDeleteGalleryDialog(true);
+    };
+
+    const handleCloseConfirmDeleteGalleryDialog = () => {
+        setOpenConfirmDeleteGalleryDialog(false);
+    };
+
+    const removeProductGallery = async (id: string | number) => {
+        try {
+            await productApi.removeGallery(id);
+            toast("Deleted product's image successfully!");
+
+            updateProduct();
+        } catch (error) {
+            toast.error('Something went wrong, try again!');
+        }
+        handleCloseConfirmDeleteGalleryDialog();
+    };
+
+    return (
+        <ImageListItem key={file.id}>
+            <Box width={100} height={100} sx={{ margin: '0 auto' }}>
+                <img
+                    src={`${process.env.REACT_APP_TFASHION_DOMAIN}/storage/${file.thumbnail}`}
+                    alt={`product-preview-${file.id}`}
+                    loading="lazy"
+                />
+            </Box>
+            <Box>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: 4,
+                        right: 8,
+                        cursor: 'pointer',
+                    }}
+                    onClick={handleClickOpenConfirmDeleteGalleryDialog}
+                >
+                    <HighlightOffIcon />
+                </Box>
+                <Dialog
+                    open={openConfirmDeleteGalleryDialog}
+                    onClose={handleCloseConfirmDeleteGalleryDialog}
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        Are you sure you want to delete?
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            This action can't be undo!
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseConfirmDeleteGalleryDialog}>Cancel</Button>
+                        <Button
+                            onClick={() => removeProductGallery(file.id as string | number)}
+                            autoFocus
+                            variant="contained"
+                            color="warning"
+                        >
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Box>
+        </ImageListItem>
+    );
+}
+
 export function UpdateProductForm({
     productID: id,
     initialValues,
+    updateProduct,
     onSubmit,
 }: UpdateProductFormProps) {
     console.log({ initialValues });
+    // const [isChanged, setIsChanged] = useState(false);
     const handleUpdateProductSubmit = async (payload: ProductPayload) => {
         try {
             await onSubmit?.(payload);
@@ -52,22 +135,6 @@ export function UpdateProductForm({
             setCategoryOptions(listOptions as Array<CategoryOption>);
         })();
     }, []);
-
-    // Confirm delete gallery dialog
-    const [openConfirmDeleteGalleryDialog, setOpenConfirmDeleteGalleryDialog] = useState(false);
-
-    const handleClickOpenConfirmDeleteGalleryDialog = () => {
-        setOpenConfirmDeleteGalleryDialog(true);
-    };
-
-    const handleCloseConfirmDeleteGalleryDialog = () => {
-        setOpenConfirmDeleteGalleryDialog(false);
-    };
-
-    const removeProductGallery = async () => {
-        console.log('deleted');
-        handleCloseConfirmDeleteGalleryDialog();
-    };
 
     return (
         <Formik
@@ -110,58 +177,9 @@ export function UpdateProductForm({
                         <ImageList variant="masonry" cols={3} gap={16} sx={{ overflowY: 'hidden' }}>
                             {props.values.galleries?.length > 0 &&
                                 props.values.galleries.map((file: Gallery) => (
-                                    <ImageListItem key={file.id}>
-                                        <Box width={100} height={100} sx={{ margin: '0 auto' }}>
-                                            <img
-                                                src={`${process.env.REACT_APP_TFASHION_DOMAIN}/storage/${file.thumbnail}`}
-                                                alt={`product-preview-${file.id}`}
-                                                loading="lazy"
-                                            />
-                                        </Box>
-                                        <Box>
-                                            <Box
-                                                sx={{
-                                                    position: 'absolute',
-                                                    top: 4,
-                                                    right: 8,
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={handleClickOpenConfirmDeleteGalleryDialog}
-                                            >
-                                                <HighlightOffIcon />
-                                            </Box>
-                                            <Dialog
-                                                open={openConfirmDeleteGalleryDialog}
-                                                onClose={handleCloseConfirmDeleteGalleryDialog}
-                                            >
-                                                <DialogTitle id="alert-dialog-title">
-                                                    Are you sure you want to delete?
-                                                </DialogTitle>
-                                                <DialogContent>
-                                                    <DialogContentText id="alert-dialog-description">
-                                                        This action can't be undo!
-                                                    </DialogContentText>
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button
-                                                        onClick={
-                                                            handleCloseConfirmDeleteGalleryDialog
-                                                        }
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                    <Button
-                                                        onClick={removeProductGallery}
-                                                        autoFocus
-                                                        variant="contained"
-                                                        color="warning"
-                                                    >
-                                                        Delete
-                                                    </Button>
-                                                </DialogActions>
-                                            </Dialog>
-                                        </Box>
-                                    </ImageListItem>
+                                    <Fragment key={file.id}>
+                                        <ProductImage file={file} updateProduct={updateProduct} />
+                                    </Fragment>
                                 ))}
                         </ImageList>
                     </Box>
@@ -174,7 +192,7 @@ export function UpdateProductForm({
                     </Box>
                     <Box mt={2} sx={{ textAlign: 'right' }}>
                         <Button type="submit" variant="contained">
-                            Create
+                            Save
                         </Button>
                     </Box>
                 </Form>

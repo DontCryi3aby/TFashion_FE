@@ -1,10 +1,14 @@
 import { Box, Paper, Typography } from '@mui/material';
-import { ProductPayload } from 'models/product';
+import axios from 'axios';
+import { GalleryPayload, ProductPayload } from 'models/product';
+import { toast } from 'react-toastify';
 import { CreateProductForm } from './CreateProductForm';
+import { useNavigate } from 'react-router-dom';
 
 export interface CreateProps {}
 
 export function Create(props: CreateProps) {
+    const navigate = useNavigate();
     const initialValues: ProductPayload = {
         category_id: 0,
         title: '',
@@ -15,8 +19,34 @@ export function Create(props: CreateProps) {
         galleries: [],
     };
 
-    const handleLoginFormSubmit = (formValues: any) => {
-        console.log(formValues);
+    const handleLoginFormSubmit = async (formValues: any) => {
+        const productData = new FormData();
+        productData.append('category_id', formValues.category_id);
+        productData.append('title', formValues.title);
+        productData.append('description', formValues.description);
+        productData.append('quantity', formValues.quantity);
+        productData.append('price', formValues.price);
+        productData.append('discount', formValues.discount);
+        formValues.galleries.forEach((gallery: GalleryPayload) => {
+            productData.append('galleries[]', gallery.file);
+        });
+
+        try {
+            const product = await axios.post(
+                `${process.env.REACT_APP_TFASHION_DOMAIN}/api/v1/products`,
+                productData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                },
+            );
+            console.log({ product });
+            toast('Create new product successfully!');
+            navigate('/admin/products');
+        } catch (error) {
+            toast.error('Create product fail, try again later!');
+        }
     };
 
     return (
