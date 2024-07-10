@@ -1,9 +1,9 @@
 import { Box, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 import { GalleryPayload, ProductPayload } from 'models/product';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { CreateProductForm } from './CreateProductForm';
-import { useNavigate } from 'react-router-dom';
 
 export interface CreateProps {}
 
@@ -32,7 +32,7 @@ export function Create(props: CreateProps) {
         });
 
         try {
-            const product = await axios.post(
+            await axios.post(
                 `${process.env.REACT_APP_TFASHION_DOMAIN}/api/v1/products`,
                 productData,
                 {
@@ -41,7 +41,6 @@ export function Create(props: CreateProps) {
                     },
                 },
             );
-            console.log({ product });
             toast('Create new product successfully!');
             navigate('/admin/products');
         } catch (error) {

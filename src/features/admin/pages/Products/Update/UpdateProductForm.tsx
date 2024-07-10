@@ -111,7 +111,6 @@ export function UpdateProductForm({
     updateProduct,
     onSubmit,
 }: UpdateProductFormProps) {
-    console.log({ initialValues });
     // const [isChanged, setIsChanged] = useState(false);
     const handleUpdateProductSubmit = async (payload: ProductPayload) => {
         try {

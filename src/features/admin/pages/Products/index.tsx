@@ -17,8 +17,6 @@ export function AdminProductPage(props: AdminProductPageProps) {
     useEffect(() => {
         (async () => {
             const { data, meta } = await productApi.getAll({ per_page: 10, page: currentPage });
-            console.log('call api');
-            console.log({ data });
             setProductList(data);
             setTotalPage(meta.last_page);
             setIsLoadingListProduct(false);

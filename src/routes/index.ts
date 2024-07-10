@@ -4,13 +4,16 @@ import Home from 'features/home/Home';
 import { RouteProps } from 'models';
 import CartPage from 'features/cart/pages/CartPage';
 import { AdminLayout } from 'components/Layouts/AdminLayout';
-import { AdminProductPage, Dashboard } from 'features/admin/pages';
+import { AdminProductPage, Dashboard, Settings } from 'features/admin/pages';
 import { Create as AdminProductCreate } from 'features/admin/pages/Products/Create';
 import { Update as AdminProductUpdate } from 'features/admin/pages/Products/Update';
+import { AccountPage } from 'features/admin/pages/Account';
 const ROUTES: Array<RouteProps> = [
     { path: '/register', component: LoginPage, layout: null },
     { path: '/login', component: LoginPage, layout: null },
     { path: '/admin', component: Dashboard, private: true, layout: AdminLayout },
+    { path: '/admin/settings', component: Settings, private: true, layout: AdminLayout },
+    { path: '/admin/account', component: AccountPage, private: true, layout: AdminLayout },
     { path: '/admin/dashboard', component: Dashboard, private: true, layout: AdminLayout },
     { path: '/admin/products', component: AdminProductPage, private: true, layout: AdminLayout },
     {

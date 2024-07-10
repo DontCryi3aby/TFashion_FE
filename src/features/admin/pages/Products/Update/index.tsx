@@ -56,7 +56,7 @@ export function Update(props: UpdateProps) {
         });
 
         try {
-            const product = await axios.post(
+            await axios.post(
                 `${process.env.REACT_APP_TFASHION_DOMAIN}/api/v1/products/${id}`,
                 productData,
                 {
@@ -65,7 +65,6 @@ export function Update(props: UpdateProps) {
                     },
                 },
             );
-            console.log({ product });
             toast('Updated product successfully!');
             navigate('/admin/products');
         } catch (error) {
