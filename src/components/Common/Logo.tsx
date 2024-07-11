@@ -1,3 +1,5 @@
+import LogoSrc from 'images/logo.png';
+
 export function Logo() {
-    return <img src="http://blueskytechco.net/mazia/media/wysiwyg/logo-footer.png" alt="Logo" />;
+    return <img src={LogoSrc} alt="Logo" />;
 }

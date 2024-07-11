@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { Logo } from 'components/Common';
 import { authActions } from 'features/auth/authSlice';
 import { Link } from 'react-router-dom';
-import { history } from 'utils';
+import { history, theme } from 'utils';
 
 export interface HeaderProps {}
 
@@ -64,10 +64,10 @@ export function Header(props: HeaderProps) {
     };
 
     return (
-        <AppBar position="static" sx={{ background: '#292929' }}>
+        <AppBar position="static" sx={{ background: theme.palette.common.white }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Box width={120}>
+                    <Box width={170}>
                         <Link to="/">
                             <Logo />
                         </Link>
@@ -128,12 +128,20 @@ export function Header(props: HeaderProps) {
                     >
                         LOGO
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: { xs: 'none', md: 'flex' },
+                            gap: { md: 1 },
+                            justifyContent: 'center',
+                        }}
+                    >
                         {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
+                                variant="contained"
                             >
                                 {page}
                             </Button>

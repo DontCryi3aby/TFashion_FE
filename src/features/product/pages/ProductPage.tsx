@@ -1,13 +1,12 @@
-import { Box, Button, Container, Divider, Grid, Stack, Typography } from '@mui/material';
-import { Options, Splide, SplideSlide } from '@splidejs/react-splide';
-import { createRef, useEffect, useState } from 'react';
-import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import Tab from '@mui/material/Tab';
+import RemoveIcon from '@mui/icons-material/Remove';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import ProductList from '../ProductList';
+import { Box, Button, Container, Divider, Grid, Stack, Typography } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import { Options, Splide, SplideSlide } from '@splidejs/react-splide';
+import { createRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export interface ProductPageProps {}
@@ -215,7 +214,6 @@ export default function ProductPage(props: ProductPageProps) {
                     </Stack>
                 </Grid>
             </Grid>
-            <ProductList />
         </Container>
     );
 }
