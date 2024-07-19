@@ -1,6 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
 import ProductCard from './ProductCard';
-import { Link } from 'react-router-dom';
 
 export interface ProductListProps {}
 
@@ -25,47 +24,12 @@ export default function ProductList(props: ProductListProps) {
                     insitam
                 </Typography>
             </Box>
-            <Grid container spacing={2}>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
+            <Grid container spacing={4} mt={2}>
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                    <Grid item xxs={12} xs={6} md={4} lg={3} key={num}>
                         <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="/products/1">
-                        <ProductCard />
-                    </Link>
-                </Grid>
+                    </Grid>
+                ))}
             </Grid>
         </>
     );
