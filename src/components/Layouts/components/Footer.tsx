@@ -102,9 +102,9 @@ const footerLinks = [
     {
         title: 'CONTACT US',
         links: [
-            'Phone: 202-555-0175',
-            'Email: cogitostore@hotmail.com',
-            'Address: 123 6th St. Melbourne, FL 32904',
+            'Phone: 0705768103',
+            'Email: i3oyhp@gmail.com',
+            'Address: Nguyen Xa, Bac Tu Liem, Ha Noi, Viet Nam',
         ],
     },
 ];

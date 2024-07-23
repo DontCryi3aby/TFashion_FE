@@ -19,39 +19,32 @@ function createData(
 
 const productList = [
     createData(
-        'http://blueskytechco.net/mazia/media/catalog/product/cache/589f206efe6aad926361898ecdde4a4b/1/3/13_1_6.jpg',
+        'https://hooli-boutique.myshopify.com/cdn/shop/products/1.jpg?v=1546771000',
         'Nulla sed libero',
         '$90.00',
         2,
         '$180.00',
     ),
     createData(
-        'http://blueskytechco.net/mazia/media/catalog/product/cache/589f206efe6aad926361898ecdde4a4b/4/_/4_1_11.jpg',
+        'https://hooli-boutique.myshopify.com/cdn/shop/products/1_de7f8d7a-981a-4690-bf91-ebc902734407.jpg?v=1548232053',
         'Sweatshirt with slogan on back',
         '$110.00',
         1,
         '$110.00',
     ),
     createData(
-        'http://blueskytechco.net/mazia/media/catalog/product/cache/589f206efe6aad926361898ecdde4a4b/1/7/17_2_1.jpg',
+        'https://hooli-boutique.myshopify.com/cdn/shop/products/0dbd8ec48218401d113c63f9dbd800b5_b93b3001-1b26-4238-9961-1d87097873c5.jpg?v=1577687812',
         'Dasi Dress In Denim Blue',
         '$105.00',
         1,
         '$105.00',
     ),
     createData(
-        'http://blueskytechco.net/mazia/media/catalog/product/cache/589f206efe6aad926361898ecdde4a4b/2/9/29-29_4_3.jpg',
+        'https://hooli-boutique.myshopify.com/cdn/shop/products/1_bb92f40e-ccb4-42f8-8b72-422723a4fbab.jpg?v=1548385758',
         'Faxon Canvas Low-Top Sneaker-M',
         '$254.00',
         1,
         '$254.00',
-    ),
-    createData(
-        'http://blueskytechco.net/mazia/media/catalog/product/cache/589f206efe6aad926361898ecdde4a4b/9/_/9_1_14.jpg',
-        'Auctor gravida enim',
-        '$200.00',
-        1,
-        '$200.00',
     ),
 ];
 

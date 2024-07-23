@@ -5,9 +5,13 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { Box, Button, Container, Divider, Grid, Stack, Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
-import { Options, Splide, SplideSlide } from '@splidejs/react-splide';
+import { Options, Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
 import { createRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { theme } from 'utils';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 export interface ProductPageProps {}
 
@@ -32,19 +36,19 @@ export default function ProductPage(props: ProductPageProps) {
 
     const listSlide: any = [
         {
-            src: 'http://blueskytechco.net/mazia/media/catalog/product/cache/902bb79b45d922e05feecb00fa310518/1/8/18_12.jpg',
+            src: 'https://hooli-boutique.myshopify.com/cdn/shop/products/1_de7f8d7a-981a-4690-bf91-ebc902734407.jpg?v=1548232053',
             alt: 'alt 1',
         },
         {
-            src: 'http://blueskytechco.net/mazia/media/catalog/product/cache/902bb79b45d922e05feecb00fa310518/1/8/18-18_1_4.jpg',
+            src: 'https://hooli-boutique.myshopify.com/cdn/shop/products/2_5530a5ef-1986-4dd6-98dc-4a286624ad09.jpg?v=1548232054',
             alt: 'alt 2',
         },
         {
-            src: 'http://blueskytechco.net/mazia/media/catalog/product/cache/902bb79b45d922e05feecb00fa310518/1/9/19_12.jpg',
+            src: 'https://hooli-boutique.myshopify.com/cdn/shop/products/3_5170797c-311e-4772-a8c9-ea6bbbb16064.jpg?v=1548232055',
             alt: 'alt 3',
         },
         {
-            src: 'http://blueskytechco.net/mazia/media/catalog/product/cache/902bb79b45d922e05feecb00fa310518/1/9/19-19_5.jpg',
+            src: 'https://hooli-boutique.myshopify.com/cdn/shop/products/4_c2cc46a6-cfaf-46bf-b4ef-9b647ac2e222.jpg?v=1548232056',
             alt: 'alt 4',
         },
     ];
@@ -52,26 +56,62 @@ export default function ProductPage(props: ProductPageProps) {
     const mainOptions: Options = {
         type: 'loop',
         pagination: false,
+        lazyLoad: 'nearby',
     };
 
     const thumbsOptions: Options = {
         type: 'slide',
         rewind: true,
         pagination: false,
-        fixedWidth: 100,
-        height: 120 * listSlide.length,
+        fixedHeight: 140,
+        height: 140 * 4 + 10 * 3,
         cover: true,
         focus: 'center',
         isNavigation: true,
         arrows: false,
         direction: 'ttb',
-        perPage: listSlide.length,
+        perPage: 4,
+        gap: 10,
     };
+
+    function handleBreadcrumbClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+        event.preventDefault();
+        console.info('You clicked a breadcrumb.');
+    }
 
     return (
         <Container maxWidth="xl" sx={{ mt: 2 }}>
+            <Breadcrumbs
+                separator={<NavigateNextIcon fontSize="small" />}
+                aria-label="breadcrumb"
+                sx={{ my: 2 }}
+            >
+                <Link
+                    underline="hover"
+                    key="1"
+                    color="inherit"
+                    href="/"
+                    onClick={handleBreadcrumbClick}
+                >
+                    Home
+                </Link>
+                ,
+                <Link
+                    underline="hover"
+                    key="2"
+                    color="inherit"
+                    href="/material-ui/getting-started/installation/"
+                    onClick={handleBreadcrumbClick}
+                >
+                    Sale up to 50% Off
+                </Link>
+                ,
+                <Typography key="3" color="text.primary">
+                    Detail H V-Neck Sweater
+                </Typography>
+            </Breadcrumbs>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -85,7 +125,7 @@ export default function ProductPage(props: ProductPageProps) {
                             >
                                 {listSlide.map((slide: any) => (
                                     <SplideSlide key={slide.src}>
-                                        <Box>
+                                        <Box height="100%">
                                             <img src={slide.src} alt={slide.alt} />
                                         </Box>
                                     </SplideSlide>
@@ -97,19 +137,60 @@ export default function ProductPage(props: ProductPageProps) {
                                 options={mainOptions}
                                 ref={mainRef}
                                 aria-labelledby="Main Product Image"
+                                hasTrack={false}
                             >
-                                {listSlide.map((slide: any) => (
-                                    <SplideSlide key={slide.src}>
-                                        <Box ml={2} width="100%" height={'100%'}>
-                                            <img src={slide.src} alt={slide.alt} />
-                                        </Box>
-                                    </SplideSlide>
-                                ))}
+                                <SplideTrack>
+                                    {listSlide.map((slide: any) => (
+                                        <SplideSlide key={slide.src}>
+                                            <Box
+                                                ml={2}
+                                                sx={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <img src={slide.src} alt={slide.alt} />
+                                            </Box>
+                                        </SplideSlide>
+                                    ))}
+                                </SplideTrack>
+
+                                <Box className="splide__arrows">
+                                    <Box
+                                        sx={{
+                                            minWidth: 40,
+                                            minHeight: 60,
+                                            background: 'rgba(0, 0, 0, 0.5)',
+                                            color: theme.palette.common.white,
+                                            outline: 'none',
+                                            borderRadius: 0,
+                                        }}
+                                        component="button"
+                                        className="splide__arrow splide__arrow--prev"
+                                    >
+                                        <Box sx={{ fontSize: '40px' }}>&lsaquo;</Box>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            minWidth: 40,
+                                            minHeight: 60,
+                                            background: 'rgba(0, 0, 0, 0.5)',
+                                            color: theme.palette.common.white,
+                                            outline: 'none',
+                                            borderRadius: 0,
+                                        }}
+                                        component="button"
+                                        className="splide__arrow splide__arrow--next"
+                                    >
+                                        <Box sx={{ fontSize: '40px' }}>&rsaquo;</Box>
+                                    </Box>
+                                </Box>
                             </Splide>
                         </Box>
                     </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <Stack>
                         <Typography variant="h4">Detail H V-Neck Sweater</Typography>
                         <Typography sx={{ mt: 2 }} variant="body2">
