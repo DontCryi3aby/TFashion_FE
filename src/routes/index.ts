@@ -1,5 +1,4 @@
 import ProductPage from 'features/product/pages/ProductPage';
-import LoginPage from 'features/auth/pages/LoginPage';
 import Home from 'features/home/Home';
 import { RouteProps } from 'models';
 import CartPage from 'features/cart/pages/CartPage';
@@ -8,8 +7,11 @@ import { AdminProductPage, Dashboard, Settings } from 'features/admin/pages';
 import { Create as AdminProductCreate } from 'features/admin/pages/Products/Create';
 import { Update as AdminProductUpdate } from 'features/admin/pages/Products/Update';
 import { AccountPage } from 'features/admin/pages/Account';
+import LoginPage from 'features/auth/pages/Login/LoginPage';
+import RegisterPage from 'features/auth/pages/Register/RegisterPage';
+
 const ROUTES: Array<RouteProps> = [
-    { path: '/register', component: LoginPage, layout: null },
+    { path: '/register', component: RegisterPage, layout: null },
     { path: '/login', component: LoginPage, layout: null },
     { path: '/admin', component: Dashboard, private: true, layout: AdminLayout },
     { path: '/admin/settings', component: Settings, private: true, layout: AdminLayout },

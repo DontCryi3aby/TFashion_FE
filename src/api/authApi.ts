@@ -1,7 +1,12 @@
-import { LoginPayload, TokenResponse, User } from 'models';
+import { LoginPayload, RegisterPayload, TokenResponse, User } from 'models';
 import axiosClient from './axiosClient';
 
 const authApi = {
+    register(data: RegisterPayload): Promise<User> {
+        const url = '/auth/register';
+        return axiosClient.post(url, data);
+    },
+
     login(data: LoginPayload): Promise<TokenResponse> {
         const url = '/auth/login';
         return axiosClient.post(url, data);

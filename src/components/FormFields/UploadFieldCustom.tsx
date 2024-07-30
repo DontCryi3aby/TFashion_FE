@@ -30,25 +30,39 @@ export function UploadFieldCustom({ label, name, multiple }: UploadFieldCustomPr
     const { value, onBlur } = field;
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files?.length) {
-            const filesList = value;
-            Array.from(event.target.files).forEach((file) => {
-                const url = URL.createObjectURL(file);
+        if (!!multiple) {
+            if (event.target.files?.length) {
+                const filesList = value;
+                Array.from(event.target.files).forEach((file) => {
+                    const url = URL.createObjectURL(file);
 
-                filesList.push({
-                    file,
-                    previewUrl: url,
+                    filesList.push({
+                        file,
+                        previewUrl: url,
+                    });
                 });
-            });
-            helpers.setValue(filesList);
+                helpers.setValue(filesList);
+            }
+        } else {
+            const file: any = event.target.files?.[0];
+            const url = URL.createObjectURL(file);
+            const filePayload = {
+                file,
+                previewUrl: url,
+            };
+            helpers.setValue(filePayload);
         }
     };
 
     const removeFileUpload = (fileRemove: GalleryPayload) => {
-        const newFileList = value.filter((file: GalleryPayload) => {
-            return file !== fileRemove;
-        });
-        helpers.setValue(newFileList);
+        if (!!multiple) {
+            const newFileList = value.filter((file: GalleryPayload) => {
+                return file !== fileRemove;
+            });
+            helpers.setValue(newFileList);
+        } else {
+            helpers.setValue({});
+        }
     };
 
     return (
@@ -70,32 +84,68 @@ export function UploadFieldCustom({ label, name, multiple }: UploadFieldCustomPr
                 />
             </Button>
 
-            {value?.length > 0 && (
-                <ImageList cols={3} gap={16} sx={{ overflowY: 'hidden' }}>
-                    {value?.length > 0 &&
-                        value.map((file: GalleryPayload, index: number) => (
-                            <ImageListItem key={file.previewUrl} sx={{ position: 'relative' }}>
-                                <Box width={100} height={100} sx={{ margin: '0 auto' }}>
-                                    <img
-                                        src={file.previewUrl}
-                                        alt={`${name}-preview-${index}`}
-                                        loading="lazy"
-                                    />
-                                </Box>
-                                <HighlightOffIcon
-                                    sx={{
-                                        position: 'absolute',
-                                        top: 4,
-                                        right: 8,
-                                        cursor: 'pointer',
-                                    }}
-                                    onClick={() => {
-                                        removeFileUpload(file);
-                                    }}
+            {!!multiple ? (
+                <>
+                    {value?.length > 0 && (
+                        <ImageList cols={3} gap={16} sx={{ overflowY: 'hidden' }}>
+                            {value?.length > 0 &&
+                                value.map((file: GalleryPayload, index: number) => (
+                                    <ImageListItem
+                                        key={file.previewUrl}
+                                        sx={{ position: 'relative' }}
+                                    >
+                                        <Box width={100} height={100} sx={{ margin: '0 auto' }}>
+                                            <img
+                                                src={file.previewUrl}
+                                                alt={`${name}-preview-${index}`}
+                                                loading="lazy"
+                                            />
+                                        </Box>
+                                        <HighlightOffIcon
+                                            sx={{
+                                                position: 'absolute',
+                                                top: 4,
+                                                right: 8,
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={() => {
+                                                removeFileUpload(file);
+                                            }}
+                                        />
+                                    </ImageListItem>
+                                ))}
+                        </ImageList>
+                    )}
+                </>
+            ) : (
+                <>
+                    {!!value?.file && (
+                        <Box
+                            sx={{ position: 'relative', margin: '16px auto 0' }}
+                            width={200}
+                            height={200}
+                        >
+                            <Box width="100%" height="100%">
+                                <img
+                                    src={value.previewUrl}
+                                    alt={`${name}-preview`}
+                                    loading="lazy"
                                 />
-                            </ImageListItem>
-                        ))}
-                </ImageList>
+                            </Box>
+                            <HighlightOffIcon
+                                sx={{
+                                    position: 'absolute',
+                                    top: 4,
+                                    right: 8,
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => {
+                                    removeFileUpload(value);
+                                }}
+                            />
+                        </Box>
+                    )}
+                </>
             )}
 
             <FormHelperText>{meta.touched && meta.error}</FormHelperText>
