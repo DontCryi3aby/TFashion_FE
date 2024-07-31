@@ -1,7 +1,7 @@
 import { Box, Container, Stack } from '@mui/material';
-import ProductList from '../product/ProductList';
 import Banner from './Banner';
 import Slider from './Slider';
+import ProductList from 'components/Common/ProductList';
 
 export interface HomeProps {}
 

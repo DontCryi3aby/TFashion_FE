@@ -8,3 +8,13 @@ a {
     text-decoration: none;
     color: unset;
 }
+
+.color-picker-pdp .splide__list {
+    flex-wrap: wrap;
+}
+
+.size-picker-pdp .is-active,
+.color-picker-pdp .splide__slide.is-active {
+    background: #121621;
+    color: #fff;
+}
